@@ -1,6 +1,6 @@
-const User = require("../model/User");
+import User from "../model/User.js";
 
-exports.signin = (req, res) => {
+export function signin(req, res) {
 
-};
+}
 

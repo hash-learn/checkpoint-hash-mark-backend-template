@@ -1,8 +1,24 @@
-const express = require("express");
-
+import express from "express";
+//database connection
+import db from "./config/db.js"
 // Routes
-const auth = require("./routes/auth");
+import auth from "./routes/auth.js";
+import productRouter from "./routes/Products.js"
+// import cors from "cors";
+
+const app = express();
+
+db.once(open, () => {
+    console.log('connected to database');
+})
+
+
+// app.use(cors());
+app.use(express.json());
+
 app.use("/api", auth);
+
+app.use("/products", productRouter);
 
 
 const port = process.env.PORT || 8000;
