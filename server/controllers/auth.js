@@ -15,9 +15,9 @@ export async function handlesignup(req, res, next) {
             email: email,
             password: password,
         });
-        if (user) {
+        if (newUser) {
             //generating jwt
-            const token = jwt.sign({ userId: user._id },
+            const token = jwt.sign({ userId: newUser._id },
                 "mysecretkey", {
                 expiresIn: "7d",
             });
@@ -29,9 +29,9 @@ export async function handlesignup(req, res, next) {
                 maxAge: 7 * 24 * 60 * 60,
             });
             res.json({
-                id: user._id,
-                name: user.name,
-                email: user.email,
+                id: newUser._id,
+                name: newUser.name,
+                email: newUser.email,
             });
 
         }
