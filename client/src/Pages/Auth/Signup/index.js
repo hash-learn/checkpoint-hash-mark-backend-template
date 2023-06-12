@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../../Context/AuthContext'
 import styles from './styles.module.css'
 import validations from './validations'
+import axios from 'axios';
 
 const Signup = () => {
   const {
@@ -26,13 +27,20 @@ const Signup = () => {
     setCurrentUser({ ...currentUser, [e.target.name]: e.target.value })
   }
 
-  const handleSignUpSubmit = (e) => {
-    e.preventDefault()
-    setErrors(validations(currentUser, users)) 
-    setIsSubmitting(true)
-    localStorage.setItem('user', JSON.stringify(currentUser))
-    localStorage.setItem('users', JSON.stringify(users))
-  }
+  const handleSignUpSubmit = async (e) => {
+    e.preventDefault();
+    setErrors(validations(currentUser, users));
+    setIsSubmitting(true);
+    try {
+      const response = await axios.post('/signup', currentUser);
+      console.log("Sign up successfully, please Login!");
+      console.log("Response:", response);
+      setCurrentUser({})
+      navigate('/signin');
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
 
   return (
     <div className={styles.formGroupContainer}>

@@ -3,33 +3,51 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../../Context/AuthContext'
 import styles from './styles.module.css'
 import { LoginIcon } from '@heroicons/react/outline'
+import axios from "axios";
+
 
 const Signin = () => {
 
-  const { currentUser, login, setCurrentUser, setIsSubmitting, loggedIn } = useAuth()
+  const { currentUser, setCurrentUser, setIsSubmitting, loggedIn} = useAuth()
+  const { login, setLoggedIn } = useAuth();
+
 
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
 
   const emailRef = useRef()
   const passwordRef = useRef()
+  const navigate = useNavigate()
 
   const handleSignIn = async (e) => {
     e.preventDefault()
     setIsSubmitting(true)
     try {
-      await login(emailRef.current.value, passwordRef.current.value)
-    } catch {
-      alert("Error!")
+      const { data } = await axios.post("/signin", {
+        email,
+        password,
+      });
+      if (data.success === true) {
+        setEmail("");
+        setPassword("");
+        login(email, password);
+        console.log("Log In successfully");
+        localStorage.setItem("token", JSON.stringify(data)); 
+        setLoggedIn(true);       
+      }
+    } catch(err) {
+      console.log(err);
     }
-    setIsSubmitting(false)
+    setIsSubmitting(false);
   }
 
-  const navigate = useNavigate()
   
   useEffect(() => {
-    loggedIn && navigate('/')
-  }, [loggedIn])
+    if (loggedIn) {
+      navigate("/");
+    }
+  }, [loggedIn, navigate]);
+  
 
   return (
     <div className={styles.formGroupContainer}>
@@ -91,4 +109,4 @@ const Signin = () => {
   )
 }
 
-export default Signin
+export default Signin;

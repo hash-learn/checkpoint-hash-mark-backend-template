@@ -17,19 +17,28 @@ const AuthProvider = ({ children }) => {
   const [users, setUsers] = useState(defaultUsers)
   const [currentUser, setCurrentUser] = useState(defaultUser)
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [loggedIn, setLoggedIn] = useState(false)
+  const [loggedIn, setLoggedIn] = useState(
+    JSON.parse(localStorage.getItem("loggedIn")) || false
+  );
   const [errors, setErrors] = useState({})
 
   const login = (email, password) => {
-    const userData = Object.values(users)
+    const userData = Object.values(users);
     const indexOfUser = users.map((item) => item.email).indexOf(email)
-    if (indexOfUser && userData[indexOfUser].password === password) {
+    if (indexOfUser >= 0 && userData[indexOfUser].password === password) {
+      console.log("hii");
       const finalUser = userData[indexOfUser]
       setCurrentUser(finalUser)
       setLoggedIn(true)
+      console.log("log",loggedIn);
       localStorage.setItem("user", JSON.stringify(finalUser))
+      localStorage.setItem("loggedIn", JSON.stringify(true));
     }
   }
+
+  useEffect(() => {
+    localStorage.setItem("loggedIn", JSON.stringify(loggedIn));
+  }, [loggedIn]);
 
   const logout = () => {
     localStorage.removeItem("user")
@@ -41,7 +50,8 @@ const AuthProvider = ({ children }) => {
       passwordConfirm: "",
       address: "",
     })
-    setLoggedIn(false)
+    setLoggedIn(false);
+    localStorage.setItem("loggedIn", JSON.stringify(false));
   }
 
   useEffect(() => {
@@ -70,6 +80,7 @@ const AuthProvider = ({ children }) => {
     setIsSubmitting,
     logout,
     login,
+    setLoggedIn
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

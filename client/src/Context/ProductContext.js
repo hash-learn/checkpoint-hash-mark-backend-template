@@ -34,7 +34,7 @@ export const ProductProvider = ({ children }) => {
       
       if (category && category.length > 0) {
         await axios.get(
-          `https://fakestoreapi.com/products/category/${category}`
+          `https://fakestoreapi.com/products/category${category}`
         ).then((res) => {
           setProductList(res.data)
           setLoading(false)
