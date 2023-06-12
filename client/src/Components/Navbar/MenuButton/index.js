@@ -1,5 +1,5 @@
 import { Fragment } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Menu, Transition } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/solid'
 import {
@@ -12,11 +12,12 @@ import NAVIGATION from '../../../Config/navbarItemList'
 
 const MenuButton = () => {
   const { loggedIn, currentUser, setIsSubmitting, logout } = useAuth()
-
+  const navigate = useNavigate();
   const handleLogout = async () => {
     setIsSubmitting(true)
     try {
       await logout()
+      navigate('/signin')
     } catch {
       alert("Error")
     }
