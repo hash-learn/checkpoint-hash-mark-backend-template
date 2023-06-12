@@ -4,11 +4,12 @@ import db from "./config/db.js"
 // Routes
 import auth from "./routes/auth.js";
 import productRouter from "./routes/Products.js"
+import userRouter from "./routes/User.js"
 // import cors from "cors";
 
 const app = express();
 
-db.once(open, () => {
+db.once("open", () => {
     console.log('connected to database');
 })
 
@@ -20,6 +21,7 @@ app.use("/api", auth);
 
 app.use("/products", productRouter);
 
+app.use("/user", userRouter)
 
 const port = process.env.PORT || 8000;
 

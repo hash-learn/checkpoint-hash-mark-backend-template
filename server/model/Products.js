@@ -1,5 +1,14 @@
 import mongoose from "mongoose";
-
+const RatingSchema = new mongoose.Schema({
+    rate: {
+        type: Number,
+        required: true
+    },
+    count: {
+        type: Number,
+        required: true
+    }
+})
 const productsSchema = new mongoose.Schema(
     {
         title: {
@@ -19,14 +28,14 @@ const productsSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
-        // image:{
-        //     type: String,
-        //     required: true,
-        // },
-        // rating:{
-        //     type: String,
-        //     required: true,
-        // },
+        image: {
+            type: String,
+            required: true,
+        },
+        rating: {
+            type: RatingSchema,
+            required: true,
+        },
     }
 )
 

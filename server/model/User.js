@@ -18,10 +18,10 @@ const userSchema = new Schema(
       required: true,
     },
     favorites: {
-
+      type: [String]
     },
     cart_items: {
-
+      type: [String],
     }
   },
   { timestamps: true }
