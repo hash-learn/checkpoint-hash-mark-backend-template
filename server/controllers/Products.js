@@ -1,8 +1,8 @@
 import Products from "../model/Products.js"
-export const getAllProducts = (req, res, next) => {
+export const getAllProducts = async (req, res, next) => {
 
     try {
-        const results = Products.find();
+        const results = await Products.find();
         res.status(200).send(results)
     } catch (error) {
         console.log('error', error);
@@ -10,10 +10,10 @@ export const getAllProducts = (req, res, next) => {
     }
 
 }
-export const getProduct = (req, res, next) => {
+export const getProduct = async (req, res, next) => {
     try {
         const { id } = req.params.id;
-        const result = Products.findById(id);
+        const result = await Products.findById(id);
         if (result) {
             res.status(200).send(result);
         }
@@ -26,19 +26,30 @@ export const getProduct = (req, res, next) => {
     }
 
 }
-export const getProductsByCatogery = (req, res, next) => {
+export const getProductsByCategory = async (req, res, next) => {
     try {
-        const { cat } = req.params.catogery;
-        const results = Products.find({ catogery: cat })
-        if (results) {
-            res.status(200).send(results);
-        }
-        else {
-            res.status(200).send("Products of this catogery are not available")
-        }
+        const { cat } = req.params.category;
+        Products.find({ category: cat })
+            .then((results) => {
+                res.status(200).send(results);
+            })
+            .catch((error) => {
+                res.status(400).send(error)
+            })
+
     } catch (error) {
         console.log('error', error);
         next(error);
     }
 
+}
+export const createProducts = async (req, res, next) => {
+    try {
+        const product = new Products(req.body);
+        await product.save();
+        res.status(200).send(product);
+    } catch (error) {
+        console.log(error);
+        next(error);
+    }
 }

@@ -1,7 +1,7 @@
 import User from "../model/User.js";
 async function getUserDetails(req, res, next) {
     try {
-        const user = findById(req.params.id);
+        const user = await User.findById(req.params.id);
         if (user) {
             res.status(200).send(user);
         }
@@ -14,11 +14,14 @@ async function getUserDetails(req, res, next) {
 }
 async function getCartDetailsOfUser(req, res, next) {
     try {
-        const user = req.params.id;
+        const { id } = req.params.id;
+        const user = await User.findById(id);
         if (!user) {
-            return res.status(404).json({ messaage: "user not found" })
+            res.status(404).json({ messaage: "user not found" })
         }
-        const userCart = 
+        const userCart = user.cart_items;
+        res.status(200).send(userCart);
+
     } catch (error) {
         next(error);
     }
@@ -32,6 +35,8 @@ async function AddProductToCart(req, res, next) {
 }
 async function DeleteProductFromCart(req, res, next) {
     try {
+        let user = await User.findById(req.params.id);
+
 
     } catch (error) {
         next(error);
@@ -39,6 +44,13 @@ async function DeleteProductFromCart(req, res, next) {
 }
 async function getFavouritesOfUser(req, res, next) {
     try {
+        const { id } = req.params.id;
+        const user = await User.findById(id);
+        if (!user) {
+            res.status(404).json({ messaage: "user not found" })
+        }
+        const userFavourites = user.favorites;
+        res.status(200).send(userFavourites);
 
     } catch (error) {
         next(error);
