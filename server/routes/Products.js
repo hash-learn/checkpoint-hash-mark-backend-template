@@ -3,8 +3,8 @@ import { getAllProducts, getProduct, getProductsByCategory, createProducts } fro
 
 const router = express.Router();
 
-router.get("/", getAllProducts);
-router.get("/products/:id", getProduct);
+// router.get("/", getAllProducts);
+router.get("/:id", getProduct);
 router.get("/products/:category", getProductsByCategory);
 router.post('/', createProducts);
 

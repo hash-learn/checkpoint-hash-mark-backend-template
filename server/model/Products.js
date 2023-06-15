@@ -11,6 +11,10 @@ const RatingSchema = new mongoose.Schema({
 })
 const productsSchema = new mongoose.Schema(
     {
+        id: {
+            type: Number,
+            unique: true,
+        },
         title: {
             type: String,
             required: true,

@@ -10,6 +10,7 @@ const verifyToken = async (req, res, next) => {
         const decode = jwt.verify(token, "mysecretkey");
         const user = await User.findById(decode.userID).select("-password");
         req.user = user;
+        next();
     } catch (error) {
         console.log("error in verifyToken middleware: ", error);
         res.status(500).send("server side error")

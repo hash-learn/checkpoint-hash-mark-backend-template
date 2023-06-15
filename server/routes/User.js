@@ -4,15 +4,15 @@ import { verifyToken } from "../middlewares/verifyToken.js";
 
 const router = express.Router();
 
-router.get("/user/:id", verifyToken, getUserDetails)
-router.get("/user/:id/cart", verifyToken, getCartDetailsOfUser)
-router.get("/user/:id/favorites", verifyToken, getFavouritesOfUser)
+router.get("/:id", verifyToken, getUserDetails)
+router.get("/:id/cart", verifyToken, getCartDetailsOfUser)
+router.get("/:id/favorites", verifyToken, getFavouritesOfUser)
 
-router.post("/user/:id/cart", verifyToken, AddProductToCart)
-router.post("/user/:id/favorites", verifyToken, AddFavouritesOfUser)
+router.post("/:id/cart", verifyToken, AddProductToCart)
+router.post("/:id/favorites", verifyToken, AddFavouritesOfUser)
 
-router.put("/user/:id/cart", verifyToken, DeleteProductFromCart)
-router.put("/user/:id/favorites", verifyToken, DeleteFavouritesOfUser)
+router.put("/:id/cart", verifyToken, DeleteProductFromCart)
+router.put("/:id/favorites", verifyToken, DeleteFavouritesOfUser)
 
 
 

@@ -1,6 +1,7 @@
 import Products from "../model/Products.js"
 export const getAllProducts = async (req, res, next) => {
 
+    console.log('getAllProducts contoller');
     try {
         const results = await Products.find();
         res.status(200).send(results)
@@ -12,16 +13,18 @@ export const getAllProducts = async (req, res, next) => {
 }
 export const getProduct = async (req, res, next) => {
     try {
-        const { id } = req.params.id;
+        const { id } = req.params;
         const result = await Products.findById(id);
         if (result) {
+            console.log('getProduct contoller');
             res.status(200).send(result);
         }
         else {
             res.status(200).send("product is not available")
         }
     } catch (error) {
-        console.log('error', error);
+        console.log('error in getProduct', error);
+        res.status(500).send("error in getProduct controller")
         next(error)
     }
 
@@ -29,13 +32,8 @@ export const getProduct = async (req, res, next) => {
 export const getProductsByCategory = async (req, res, next) => {
     try {
         const { cat } = req.params.category;
-        Products.find({ category: cat })
-            .then((results) => {
-                res.status(200).send(results);
-            })
-            .catch((error) => {
-                res.status(400).send(error)
-            })
+        const res = await Products.find({ category: cat })
+        res.send(res).status(200);
 
     } catch (error) {
         console.log('error', error);

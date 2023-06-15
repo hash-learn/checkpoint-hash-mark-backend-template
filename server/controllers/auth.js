@@ -14,13 +14,15 @@ export async function handlesignin(req, res, next) {
         }
 
         if (user && checkPassword) {
-            const token = jwt.sign({ userId: user._id }, "mysecretkey", { expiresIn: "7d" });
+            const token = jwt.sign({ userId: user._id }, "mysecretkey",
+                { expiresIn: "7d" });
             res.status(200).cookie("userToken", token, {
                 httpOnly: true,
                 secure: "false",
                 sameSite: "strict",
                 maxAge: 7 * 24 * 60 * 60,
             });
+            res.send(token)
 
         }
 

@@ -28,15 +28,34 @@ async function getCartDetailsOfUser(req, res, next) {
 }
 async function AddProductToCart(req, res, next) {
     try {
-
+        let user = req.user;
+        let updatedCart = [req.params.id, ...user.cart_items];
+        user.cart_items = updatedCart;
+        const updateUser = await user.save();
+        if (updateUser)
+            res.status(200).send(updateUser);
+        else
+            res.status(400).send("error from client side")
     } catch (error) {
+        console.log(error);
+        res.send("error from serverside").status(500);
         next(error);
     }
 }
 async function DeleteProductFromCart(req, res, next) {
     try {
-        let user = await User.findById(req.params.id);
-
+        let user = req.user;
+        let cart = user.cart_items;
+        const index = cart.indexOf(req.params.id);
+        if (index > -1) {
+            cart.splice(index, 1);
+        }
+        else {
+            res.send("couldn't find the element")
+        }
+        user.cart_items = cart;
+        const updatedUser = await user.save();
+        res.status(200).send(updatedUser);
 
     } catch (error) {
         next(error);
@@ -58,14 +77,29 @@ async function getFavouritesOfUser(req, res, next) {
 }
 async function AddFavouritesOfUser(req, res, next) {
     try {
-
+        let user = req.user;
+        let favor = user.favorites;
+        user.favorites = [req.params.id, ...favor];
+        await user.save();
+        res.send(200).send(user);
     } catch (error) {
         next(error);
     }
 }
 async function DeleteFavouritesOfUser(req, res, next) {
     try {
-
+        let user = req.user;
+        let favor = user.favorites;
+        const index = favor.indexOf(req.params.id);
+        if (index > -1) {
+            favor.splice(index, 1);
+        }
+        else {
+            res.send("couldn't find the element")
+        }
+        user.favorites = favor;
+        const updatedUser = await user.save();
+        res.status(200).send(updatedUser);
     } catch (error) {
         next(error);
     }

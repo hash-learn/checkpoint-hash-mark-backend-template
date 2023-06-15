@@ -6,7 +6,7 @@ import db from "./config/db.js"
 import auth from "./routes/auth.js";
 import productRouter from "./routes/Products.js"
 import userRouter from "./routes/User.js"
-// import cors from "cors";
+import cors from "cors";
 
 const app = express();
 
@@ -15,7 +15,7 @@ db.once("open", () => {
 })
 
 app.use(morgan());
-// app.use(cors());
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
